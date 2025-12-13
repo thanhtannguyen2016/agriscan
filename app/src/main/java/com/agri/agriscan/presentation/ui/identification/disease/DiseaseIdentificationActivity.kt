@@ -1,0 +1,160 @@
+package com.agri.agriscan.presentation.ui.identification.disease
+
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.view.View
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
+import com.agri.agriscan.databinding.ActivityDiseaseIdentificationBinding
+import com.agri.agriscan.domain.model.Disease
+import com.agri.agriscan.domain.model.Plant
+import com.agri.agriscan.domain.model.UiState
+import com.agri.agriscan.presentation.ui.treatment.TreatmentActivity
+import com.agri.agriscan.util.Constants
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+
+@AndroidEntryPoint
+class DiseaseIdentificationActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityDiseaseIdentificationBinding
+    private val viewModel: DiseaseIdentificationViewModel by viewModels()
+    private lateinit var diseaseAdapter: DiseaseResultAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityDiseaseIdentificationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setupToolbar()
+        setupRecyclerView()
+        setupObservers()
+        setupClickListeners()
+
+        // Get plant and image URI
+        val plant = intent.getParcelableExtra<Plant>(Constants.EXTRA_PLANT_DATA)
+        val imageUri = intent.getStringExtra(Constants.EXTRA_IMAGE_URI)
+
+        if (plant != null && imageUri != null) {
+            viewModel.setPlant(plant)
+            binding.ivCapturedImage.load(Uri.parse(imageUri))
+            binding.tvPlantInfo.text = plant.commonNames.firstOrNull() ?: plant.scientificName
+            viewModel.identifyDisease(imageUri)
+        } else {
+            finish()
+        }
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.setNavigationOnClickListener { finish() }
+    }
+
+    private fun setupRecyclerView() {
+        diseaseAdapter = DiseaseResultAdapter { disease ->
+            showDiseaseConfirmationDialog(disease)
+        }
+
+        binding.rvDiseaseResults.apply {
+            layoutManager = LinearLayoutManager(this@DiseaseIdentificationActivity)
+            adapter = diseaseAdapter
+        }
+    }
+
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            viewModel.uiState.collect { state ->
+                when (state) {
+                    is UiState.Idle -> showIdleState()
+                    is UiState.Loading -> showLoadingState()
+                    is UiState.Success -> showSuccessState(state.data)
+                    is UiState.Error -> showErrorState(state.message)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.confirmedDisease.collect { disease ->
+                binding.btnViewTreatment.visibility = if (disease != null) View.VISIBLE else View.GONE
+            }
+        }
+    }
+
+    private fun setupClickListeners() {
+        binding.btnViewTreatment.setOnClickListener {
+            val plant = viewModel.plant.value
+            val disease = viewModel.confirmedDisease.value
+
+            if (plant != null && disease != null) {
+                navigateToTreatment(plant, disease)
+            }
+        }
+
+        binding.btnRetry.setOnClickListener {
+            viewModel.imageUri.value?.let { uri ->
+                viewModel.identifyDisease(uri)
+            }
+        }
+    }
+
+    private fun showIdleState() {
+        binding.statusSection.visibility = View.GONE
+        binding.errorView.visibility = View.GONE
+        binding.rvDiseaseResults.visibility = View.GONE
+        binding.tvResultsTitle.visibility = View.GONE
+    }
+
+    private fun showLoadingState() {
+        binding.statusSection.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
+        binding.tvStatus.text = "Đang nhận dạng bệnh..."
+        binding.errorView.visibility = View.GONE
+        binding.rvDiseaseResults.visibility = View.GONE
+        binding.tvResultsTitle.visibility = View.GONE
+    }
+
+    private fun showSuccessState(identification: com.agri.agriscan.domain.model.DiseaseIdentification) {
+        binding.statusSection.visibility = View.GONE
+        binding.errorView.visibility = View.GONE
+        binding.tvResultsTitle.visibility = View.VISIBLE
+        binding.rvDiseaseResults.visibility = View.VISIBLE
+
+        diseaseAdapter.submitList(identification.results)
+    }
+
+    private fun showErrorState(message: String) {
+        binding.statusSection.visibility = View.GONE
+        binding.rvDiseaseResults.visibility = View.GONE
+        binding.tvResultsTitle.visibility = View.GONE
+        binding.errorView.visibility = View.VISIBLE
+        binding.tvError.text = message
+    }
+
+    private fun showDiseaseConfirmationDialog(disease: Disease) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Xác nhận bệnh")
+            .setMessage("Bệnh: ${disease.name}\n\n${disease.description ?: ""}\n\nXem phương pháp điều trị?")
+            .setPositiveButton("Xem điều trị") { _, _ ->
+                viewModel.confirmDisease(disease)
+                viewModel.plant.value?.let { plant ->
+                    navigateToTreatment(plant, disease)
+                }
+            }
+            .setNegativeButton("Chọn lại", null)
+            .show()
+    }
+
+    private fun navigateToTreatment(plant: Plant, disease: Disease) {
+        val intent = Intent(this, TreatmentActivity::class.java).apply {
+            putExtra(Constants.EXTRA_PLANT_DATA, plant)
+            putExtra(Constants.EXTRA_DISEASE_DATA, disease)
+        }
+        startActivity(intent)
+    }
+}

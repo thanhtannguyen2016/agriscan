@@ -1,0 +1,4 @@
+package com.agri.agriscan.data.local.database.dao
+
+class HistoryDao {
+}

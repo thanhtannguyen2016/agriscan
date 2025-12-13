@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">AgriScan</string>
+    <string name="app_title">AgriScan - Nhận dạng bệnh cây trồng</string>
+    <string name="app_subtitle">Ứng dụng nhận dạng và chẩn đoán bệnh cây trồng bằng AI</string>
+
+    <!-- Main Screen -->
+    <string name="identify_disease">Nhận dạng bệnh</string>
+    <string name="view_history">Xem lịch sử</string>
+    <string name="how_it_works">Cách sử dụng</string>
+    <string name="how_it_works_step1">1. Chụp ảnh cây trồng hoặc phần bị bệnh</string>
+    <string name="how_it_works_step2">2. Hệ thống nhận dạng cây và bệnh</string>
+    <string name="how_it_works_step3">3. Nhận phương pháp điều trị chi tiết</string>
+
+    <!-- Camera -->
+    <string name="camera_instruction">Hướng camera vào cây trồng hoặc phần bị bệnh</string>
+    <string name="capture">Chụp ảnh</string>
+    <string name="gallery">Thư viện</string>
+    <string name="switch_camera">Đổi camera</string>
+    <string name="flash">Đèn flash</string>
+    <string name="back">Quay lại</string>
+
+    <!-- Plant Identification -->
+    <string name="plant_identification">Nhận dạng cây trồng</string>
+    <string name="identifying_plant">Đang nhận dạng cây trồng…</string>
+    <string name="identification_results">Kết quả nhận dạng</string>
+    <string name="low_confidence_warning">Độ chính xác thấp. Vui lòng chọn cây trồng từ danh sách hoặc chụp lại ảnh rõ hơn.</string>
+    <string name="proceed_to_disease_identification">Tiếp tục nhận dạng bệnh</string>
+    <string name="captured_plant_image">Ảnh cây trồng đã chụp</string>
+    <string name="plant_image">Ảnh cây</string>
+    <string name="confidence">Độ chính xác:</string>
+
+    <!-- Disease Identification -->
+    <string name="disease_identification">Nhận dạng bệnh</string>
+    <string name="identifying_disease">Đang nhận dạng bệnh…</string>
+    <string name="disease_results">Kết quả nhận dạng bệnh</string>
+    <string name="select_disease">Chọn bệnh để xem phương pháp điều trị</string>
+    <string name="confirm_disease">Xác nhận bệnh</string>
+    <string name="view_treatment">Xem phương pháp điều trị</string>
+    <string name="disease_image">Ảnh bệnh</string>
+
+    <!-- Treatment -->
+    <string name="treatment_methods">Phương pháp điều trị</string>
+    <string name="chemical_treatment">Hóa học</string>
+    <string name="biological_treatment">Sinh học</string>
+    <string name="prevention">Phòng ngừa</string>
+    <string name="getting_treatment">Đang lấy thông tin điều trị…</string>
+
+    <!-- Chemical Treatment -->
+    <string name="chemical">Thuốc hóa học</string>
+    <string name="active_ingredients">Hoạt chất:</string>
+    <string name="dosage">Liều lượng:</string>
+    <string name="usage">Cách sử dụng:</string>
+    <string name="precautions">Lưu ý an toàn:</string>
+
+    <!-- Biological Treatment -->
+    <string name="biological">Phương pháp sinh học</string>
+    <string name="materials">Nguyên liệu:</string>
+    <string name="steps">Các bước thực hiện:</string>
+    <string name="effectiveness">Hiệu quả:</string>
+
+    <!-- Prevention -->
+    <string name="prevention_tips">Các biện pháp phòng ngừa</string>
+    <string name="general_advice">Lời khuyên chung:</string>
+
+    <!-- Common -->
+    <string name="error">Lỗi</string>
+    <string name="error_occurred">Đã xảy ra lỗi</string>
+    <string name="retry">Thử lại</string>
+    <string name="loading">Đang tải…</string>
+    <string name="no_results">Không có kết quả</string>
+    <string name="no_internet">Không có kết nối internet</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Hủy</string>
+    <string name="save">Lưu</string>
+    <string name="delete">Xóa</string>
+    <string name="warning">Cảnh báo</string>
+    <string name="success">Thành công</string>
+
+    <!-- Permissions -->
+    <string name="permission_camera">Cần quyền truy cập camera để chụp ảnh</string>
+    <string name="permission_storage">Cần quyền truy cập bộ nhớ để lưu ảnh</string>
+    <string name="permission_denied">Quyền bị từ chối</string>
+    <string name="grant_permission">Cấp quyền</string>
+
+    <!-- History -->
+    <string name="history">Lịch sử</string>
+    <string name="no_history">Chưa có lịch sử nhận dạng</string>
+    <string name="delete_history">Xóa lịch sử</string>
+    <string name="delete_confirmation">Bạn có chắc muốn xóa?</string>
+
+    <!-- Organ Types -->
+    <string name="organ_auto">Tự động</string>
+    <string name="organ_leaf">Lá</string>
+    <string name="organ_flower">Hoa</string>
+    <string name="organ_fruit">Quả</string>
+    <string name="organ_bark">Thân/Vỏ</string>
+
+    <!-- About -->
+    <string name="about">Giới thiệu</string>
+    <string name="version">Phiên bản</string>
+    <string name="app_logo">Logo ứng dụng</string>
+
+    <!-- Errors -->
+    <string name="error_image_processing">Lỗi xử lý ảnh</string>
+    <string name="error_api">Lỗi kết nối API</string>
+    <string name="error_timeout">Hết thời gian chờ</string>
+    <string name="error_invalid_image">Ảnh không hợp lệ</string>
+    <string name="error_no_plant_found">Không tìm thấy cây trồng trong ảnh</string>
+    <string name="error_no_disease_found">Không tìm thấy dấu hiệu bệnh</string>
+    <string name="info">Info</string>
+</resources>
