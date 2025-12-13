@@ -110,4 +110,5 @@
     <string name="error_no_plant_found">Không tìm thấy cây trồng trong ảnh</string>
     <string name="error_no_disease_found">Không tìm thấy dấu hiệu bệnh</string>
     <string name="info">Info</string>
+    <string name="capture_photo">Capture photo</string>
 </resources>

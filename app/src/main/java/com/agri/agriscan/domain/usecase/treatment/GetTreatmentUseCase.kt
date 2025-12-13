@@ -27,7 +27,7 @@ class GetTreatmentUseCase @Inject constructor(
     ): Flow<Resource<Treatment>> {
 
         // Validate input
-        if (plant.scientificName.isBlank()) {
+        if (plant.scientificName?.isBlank() == true) {
             return flow {
                 emit(Resource.Error("Thông tin cây trồng không hợp lệ"))
             }
