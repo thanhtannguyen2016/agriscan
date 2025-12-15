@@ -25,5 +25,5 @@ interface DiseaseRepository {
      * Get list of all identifiable diseases
      * @return Flow of Resource containing list of Disease
      */
-    suspend fun getDiseases(): Flow<Resource<List<Disease>>>
+    suspend fun getDiseases(prefix: String? = null): Flow<Resource<List<Disease>>>
 }

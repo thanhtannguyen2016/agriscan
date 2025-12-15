@@ -41,13 +41,18 @@ class DiseaseIdentificationViewModel @Inject constructor(
      * Identify disease from image
      */
     fun identifyDisease(imageUri: String, organs: List<String> = listOf("auto")) {
+        val currentPlant = _plant.value
+        if (currentPlant == null) {
+            _uiState.value = UiState.Error("Chưa có thông tin cây trồng")
+            return
+        }
         _imageUri.value = imageUri
 
         viewModelScope.launch {
             identifyDiseaseUseCase(
                 imageUris = listOf(imageUri),
                 organs = organs,
-                plant = _plant.value
+                plant = currentPlant
             ).collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {

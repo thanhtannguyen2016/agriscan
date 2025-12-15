@@ -25,7 +25,7 @@ class DiseaseRepositoryImpl @Inject constructor(
     private val diseaseMapper: DiseaseMapper
 ) : DiseaseRepository {
 
-    override suspend fun getDiseases(): Flow<Resource<List<Disease>>> = flow {
+    override suspend fun getDiseases(prefix: String?): Flow<Resource<List<Disease>>> = flow {
         try {
             emit(Resource.Loading)
 

@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
+// Qualifiers for Retrofit instances
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class PlantNetRetrofit
@@ -26,6 +27,24 @@ annotation class PlantNetRetrofit
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class OpenAIRetrofit
+
+// Qualifiers for Interceptors - QUAN TRỌNG!
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class PlantNetInterceptor
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class OpenAIInterceptor
+
+// Qualifiers for OkHttpClients
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class PlantNetOkHttp
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class OpenAIOkHttp
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -51,8 +70,10 @@ object NetworkModule {
         }
     }
 
+    // PlantNet Interceptor - với Qualifier
     @Provides
     @Singleton
+    @PlantNetInterceptor
     fun providePlantNetInterceptor(): Interceptor {
         return Interceptor { chain ->
             val original = chain.request()
@@ -71,8 +92,10 @@ object NetworkModule {
         }
     }
 
+    // OpenAI Interceptor - với Qualifier
     @Provides
     @Singleton
+    @OpenAIInterceptor
     fun provideOpenAIInterceptor(): Interceptor {
         return Interceptor { chain ->
             val original = chain.request()
@@ -87,31 +110,16 @@ object NetworkModule {
         }
     }
 
+    // PlantNet OkHttpClient
     @Provides
     @Singleton
-    @PlantNetRetrofit
+    @PlantNetOkHttp
     fun providePlantNetOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        plantNetInterceptor: Interceptor
+        @PlantNetInterceptor plantNetInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(plantNetInterceptor)
-            .addInterceptor(loggingInterceptor)
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    @OpenAIRetrofit
-    fun provideOpenAIOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor,
-        openAIInterceptor: Interceptor
-    ): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(openAIInterceptor)
             .addInterceptor(loggingInterceptor)
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
@@ -119,11 +127,29 @@ object NetworkModule {
             .build()
     }
 
+    // OpenAI OkHttpClient
+    @Provides
+    @Singleton
+    @OpenAIOkHttp
+    fun provideOpenAIOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        @OpenAIInterceptor openAIInterceptor: Interceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(openAIInterceptor)
+            .addInterceptor(loggingInterceptor)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
+    }
+
+    // PlantNet Retrofit
     @Provides
     @Singleton
     @PlantNetRetrofit
     fun providePlantNetRetrofit(
-        @PlantNetRetrofit okHttpClient: OkHttpClient,
+        @PlantNetOkHttp okHttpClient: OkHttpClient,
         gson: Gson
     ): Retrofit {
         return Retrofit.Builder()
@@ -133,11 +159,12 @@ object NetworkModule {
             .build()
     }
 
+    // OpenAI Retrofit
     @Provides
     @Singleton
     @OpenAIRetrofit
     fun provideOpenAIRetrofit(
-        @OpenAIRetrofit okHttpClient: OkHttpClient,
+        @OpenAIOkHttp okHttpClient: OkHttpClient,
         gson: Gson
     ): Retrofit {
         return Retrofit.Builder()
@@ -147,19 +174,17 @@ object NetworkModule {
             .build()
     }
 
+    // PlantNet API
     @Provides
     @Singleton
-    fun providePlantNetApi(
-        @PlantNetRetrofit retrofit: Retrofit
-    ): PlantNetApi {
+    fun providePlantNetApi(@PlantNetRetrofit retrofit: Retrofit): PlantNetApi {
         return retrofit.create(PlantNetApi::class.java)
     }
 
+    // OpenAI API
     @Provides
     @Singleton
-    fun provideOpenAIApi(
-        @OpenAIRetrofit retrofit: Retrofit
-    ): OpenAIApi {
+    fun provideOpenAIApi(@OpenAIRetrofit retrofit: Retrofit): OpenAIApi {
         return retrofit.create(OpenAIApi::class.java)
     }
 }

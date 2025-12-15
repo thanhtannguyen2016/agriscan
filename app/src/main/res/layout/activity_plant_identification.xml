@@ -38,7 +38,7 @@
             android:padding="16dp">
 
             <!-- Captured Image -->
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="12dp"
@@ -52,7 +52,7 @@
                     android:scaleType="centerCrop"
                     tools:src="@drawable/ic_plant_placeholder" />
 
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <!-- Status Section -->
             <LinearLayout
@@ -94,7 +94,7 @@
                 tools:visibility="visible" />
 
             <!-- Confidence Warning -->
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cardLowConfidence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <!-- Results RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
@@ -173,7 +173,7 @@
                     android:textColor="@color/text_secondary"
                     tools:text="Đã xảy ra lỗi" />
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/btnRetry"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
@@ -188,7 +188,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom Button -->
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btnProceed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

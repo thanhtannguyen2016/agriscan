@@ -111,4 +111,6 @@
     <string name="error_no_disease_found">Không tìm thấy dấu hiệu bệnh</string>
     <string name="info">Info</string>
     <string name="capture_photo">Capture photo</string>
+    <string name="app_description">App description</string>
+    <string name="how_to_use">how to use</string>
 </resources>

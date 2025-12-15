@@ -31,9 +31,9 @@ class PreventionFragment : Fragment() {
         }
     }
 
-    fun setPreventionData(measures: List<String>, advice: String) {
+    fun setPreventionData(measures: List<String>, advice: String?) {
         this.preventionMeasures = measures
-        this.generalAdvice = advice
+        this.generalAdvice = advice ?: ""
         if (_binding != null) {
             displayPreventionData()
         }

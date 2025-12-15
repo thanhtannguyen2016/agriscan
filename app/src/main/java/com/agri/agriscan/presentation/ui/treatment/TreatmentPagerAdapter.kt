@@ -36,7 +36,11 @@ class TreatmentPagerAdapter(
                     fragment.setTreatments(treatment.biologicalTreatments)
                 }
                 is PreventionFragment -> {
-                    fragment.setPreventionData(treatment.prevention, treatment.generalAdvice)
+                    val preventionTips = treatment.prevention?.tips ?: emptyList()
+                    fragment.setPreventionData(
+                        preventionTips,              // ✅ Type: List<String>
+                        treatment.generalAdvice      // Type: String?
+                    )
                 }
             }
         }

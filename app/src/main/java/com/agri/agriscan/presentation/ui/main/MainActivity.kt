@@ -43,9 +43,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        // Setup toolbar
-        setSupportActionBar(binding.toolbar)
-
         // Identify Disease Button
         binding.btnIdentifyDisease.setOnClickListener {
             checkPermissionsAndOpenCamera()
