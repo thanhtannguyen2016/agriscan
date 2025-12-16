@@ -32,6 +32,7 @@ data class ChatCompletionRequest(
     val presencePenalty: Float = 0.0f
 )
 
+
 /**
  * Chat Message
  */
@@ -211,4 +212,6 @@ object TreatmentPrompt {
             Ưu tiên các phương pháp an toàn, hiệu quả và phù hợp với Việt Nam.
         """.trimIndent()
     }
+
+
 }

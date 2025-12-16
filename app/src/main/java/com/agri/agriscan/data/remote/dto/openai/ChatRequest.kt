@@ -21,7 +21,7 @@ data class ChatRequest(
     val frequencyPenalty: Float? = null,
 
     @SerializedName("presence_penalty")
-    val presencePenalty: Float? = null
+    val presencePenalty: Float? = null,
 )
 
 data class ChatMessage(
