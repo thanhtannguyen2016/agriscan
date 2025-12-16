@@ -38,7 +38,20 @@ class PlantIdentificationActivity : AppCompatActivity() {
         // Get image URI and start identification
         val imageUri = intent.getStringExtra(Constants.EXTRA_IMAGE_URI)
         if (imageUri != null) {
-            binding.ivCapturedImage.load(Uri.parse(imageUri))
+            val uri = Uri.parse(imageUri)
+
+            // Take persistable URI permission để có thể pass sang Activity khác
+            try {
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            } catch (e: SecurityException) {
+                // URI không phải từ picker hoặc không cần permission
+                // (ví dụ: file:// URI)
+            }
+
+            binding.ivCapturedImage.load(uri)
             viewModel.identifyPlant(imageUri)
         } else {
             finish()
@@ -143,7 +156,7 @@ class PlantIdentificationActivity : AppCompatActivity() {
     private fun showPlantSelectionDialog(plant: Plant) {
         val commonName = plant.commonNames.firstOrNull() ?: plant.scientificName
 
-        MaterialAlertDialogBuilder(this)
+        androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle("Xác nhận cây trồng")
             .setMessage("Bạn đã chọn: $commonName\n\nTiếp tục nhận dạng bệnh?")
             .setPositiveButton("Tiếp tục") { _, _ ->

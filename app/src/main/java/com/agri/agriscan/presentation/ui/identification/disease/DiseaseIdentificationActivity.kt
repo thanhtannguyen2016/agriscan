@@ -3,6 +3,7 @@ package com.agri.agriscan.presentation.ui.identification.disease
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -41,8 +42,21 @@ class DiseaseIdentificationActivity : AppCompatActivity() {
         val imageUri = intent.getStringExtra(Constants.EXTRA_IMAGE_URI)
 
         if (plant != null && imageUri != null) {
+            val uri = Uri.parse(imageUri)
+
+            // Take persistable URI permission để load ảnh từ URI
+            try {
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            } catch (e: SecurityException) {
+                // URI không phải từ picker (file:// URI) hoặc đã có permission
+                Log.w(TAG, "Could not take persistable permission: ${e.message}")
+            }
+
             viewModel.setPlant(plant)
-            binding.ivCapturedImage.load(Uri.parse(imageUri))
+            binding.ivCapturedImage.load(uri)
             binding.tvPlantInfo.text = plant.commonNames.firstOrNull() ?: plant.scientificName
             viewModel.identifyDisease(imageUri)
         } else {
@@ -137,7 +151,7 @@ class DiseaseIdentificationActivity : AppCompatActivity() {
     }
 
     private fun showDiseaseConfirmationDialog(disease: Disease) {
-        MaterialAlertDialogBuilder(this)
+        androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle("Xác nhận bệnh")
             .setMessage("Bệnh: ${disease.name}\n\n${disease.description ?: ""}\n\nXem phương pháp điều trị?")
             .setPositiveButton("Xem điều trị") { _, _ ->
@@ -154,7 +168,13 @@ class DiseaseIdentificationActivity : AppCompatActivity() {
         val intent = Intent(this, TreatmentActivity::class.java).apply {
             putExtra(Constants.EXTRA_PLANT_DATA, plant)
             putExtra(Constants.EXTRA_DISEASE_DATA, disease)
+            // Grant URI permission to next activity (nếu cần pass URI tiếp)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         startActivity(intent)
+    }
+
+    companion object {
+        private const val TAG = "DiseaseIdentificationActivity"
     }
 }

@@ -21,7 +21,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityCameraBinding
     private var imageCapture: ImageCapture? = null
     private var camera: Camera? = null
@@ -34,7 +33,18 @@ class CameraActivity : AppCompatActivity() {
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        uri?.let { navigateToIdentification(it) }
+        uri?.let {
+            // Take persistable permission for URI from picker
+            try {
+                contentResolver.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            } catch (e: SecurityException) {
+                Log.w(TAG, "Could not take persistable permission: ${e.message}")
+            }
+            navigateToIdentification(it)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,6 +151,8 @@ class CameraActivity : AppCompatActivity() {
     private fun navigateToIdentification(imageUri: Uri) {
         val intent = Intent(this, PlantIdentificationActivity::class.java).apply {
             putExtra(Constants.EXTRA_IMAGE_URI, imageUri.toString())
+            // Grant URI permission to next activity
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         startActivity(intent)
         finish()

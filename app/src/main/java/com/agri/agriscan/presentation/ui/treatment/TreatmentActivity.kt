@@ -90,7 +90,7 @@ class TreatmentActivity : AppCompatActivity() {
     }
 
     private fun showError(message: String) {
-        com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+        androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle("Lỗi")
             .setMessage(message)
             .setPositiveButton("Thử lại") { _, _ ->
