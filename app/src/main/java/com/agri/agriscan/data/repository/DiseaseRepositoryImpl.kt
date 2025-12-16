@@ -30,7 +30,6 @@ class DiseaseRepositoryImpl @Inject constructor(
             emit(Resource.Loading)
 
             val response = plantNetApi.getDiseases(
-                apiKey = BuildConfig.PLANTNET_API_KEY,
                 prefix = prefix,
                 lang = Constants.LANG_VIETNAMESE
             )
@@ -69,7 +68,6 @@ class DiseaseRepositoryImpl @Inject constructor(
 
             // Call API
             val response = plantNetApi.identifyDisease(
-                apiKey = BuildConfig.PLANTNET_API_KEY,
                 images = imageParts,
                 organs = organParts,
                 lang = Constants.LANG_VIETNAMESE,

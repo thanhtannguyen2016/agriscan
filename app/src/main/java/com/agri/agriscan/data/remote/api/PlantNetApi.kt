@@ -38,9 +38,8 @@ interface PlantNetApi {
     @POST("identify/{project}")
     suspend fun identifySpecies(
         @Path("project") project: String,
-        @Query("api-key") apiKey: String,
         @Part images: List<MultipartBody.Part>,
-        @Part("organs") organs: List<RequestBody>,
+        @Part("organs") organs: List<@JvmSuppressWildcards RequestBody>,
         @Query("lang") lang: String? = null,
         @Query("include-related-images") includeRelatedImages: Boolean? = null,
         @Query("no-reject") noReject: Boolean? = null,
@@ -59,7 +58,7 @@ interface PlantNetApi {
      */
     @GET("varieties")
     suspend fun getVarieties(
-        @Query("api-key") apiKey: String,
+
         @Query("prefix") prefix: String? = null,
         @Query("lang") lang: String? = null
     ): Response<List<VarietyInfo>>
@@ -79,9 +78,9 @@ interface PlantNetApi {
     @Multipart
     @POST("varieties/identify")
     suspend fun identifyVariety(
-        @Query("api-key") apiKey: String,
+
         @Part images: List<MultipartBody.Part>,
-        @Part("organs") organs: List<RequestBody>,
+        @Part("organs") organs: List<@JvmSuppressWildcards RequestBody>,
         @Query("lang") lang: String? = null,
         @Query("include-related-images") includeRelatedImages: Boolean? = null,
         @Query("no-reject") noReject: Boolean? = null,
@@ -100,7 +99,7 @@ interface PlantNetApi {
      */
     @GET("diseases")
     suspend fun getDiseases(
-        @Query("api-key") apiKey: String,
+
         @Query("prefix") prefix: String? = null,
         @Query("lang") lang: String? = null
     ): Response<List<DiseaseInfo>>
@@ -120,9 +119,9 @@ interface PlantNetApi {
     @Multipart
     @POST("diseases/identify")
     suspend fun identifyDisease(
-        @Query("api-key") apiKey: String,
+
         @Part images: List<MultipartBody.Part>,
-        @Part("organs") organs: List<RequestBody>,
+        @Part("organs") organs: List<@JvmSuppressWildcards RequestBody>,
         @Query("lang") lang: String? = null,
         @Query("include-related-images") includeRelatedImages: Boolean? = null,
         @Query("no-reject") noReject: Boolean? = null,
@@ -137,7 +136,7 @@ interface PlantNetApi {
      */
     @GET("projects")
     suspend fun getProjects(
-        @Query("api-key") apiKey: String,
+
         @Query("lang") lang: String? = null
     ): Response<List<ProjectInfo>>
 

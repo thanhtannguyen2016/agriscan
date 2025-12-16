@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -17,8 +20,17 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "PLANTNET_API_KEY", "\"${project.findProperty("PLANTNET_API_KEY")}\"")
-        buildConfigField("String", "OPENAI_API_KEY", "\"${project.findProperty("OPENAI_API_KEY")}\"")
+        val properties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            properties.load(FileInputStream(localPropertiesFile))
+        }
+
+        val plantnetApiKey: String = properties.getProperty("PLANTNET_API_KEY") ?: ""
+        val openaiApiKey: String = properties.getProperty("OPENAI_API_KEY") ?: ""
+
+        buildConfigField("String", "PLANTNET_API_KEY", "\"$plantnetApiKey\"")
+        buildConfigField("String", "OPENAI_API_KEY", "\"$openaiApiKey\"")
     }
 
     buildFeatures {

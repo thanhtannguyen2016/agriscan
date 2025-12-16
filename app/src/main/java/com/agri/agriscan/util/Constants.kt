@@ -51,7 +51,7 @@ object Constants {
 
     // Language codes
     const val LANG_ENGLISH = "en"
-    const val LANG_VIETNAMESE = "vi"
+    const val LANG_VIETNAMESE = "en"
     const val LANG_FRENCH = "fr"
 
     // ==================== Confidence Thresholds ====================

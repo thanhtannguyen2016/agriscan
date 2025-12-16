@@ -48,7 +48,6 @@ class PlantRepositoryImpl @Inject constructor(
             // Call API
             val response = plantNetApi.identifySpecies(
                 project = Constants.DEFAULT_PROJECT,
-                apiKey = BuildConfig.PLANTNET_API_KEY,
                 images = imageParts,
                 organs = organParts,
                 lang = Constants.LANG_VIETNAMESE,
@@ -76,7 +75,6 @@ class PlantRepositoryImpl @Inject constructor(
             emit(Resource.Loading)
 
             val response = plantNetApi.getVarieties(
-                apiKey = BuildConfig.PLANTNET_API_KEY,
                 prefix = prefix,
                 lang = Constants.LANG_VIETNAMESE
             )
@@ -111,7 +109,6 @@ class PlantRepositoryImpl @Inject constructor(
             }
 
             val response = plantNetApi.identifyVariety(
-                apiKey = BuildConfig.PLANTNET_API_KEY,
                 images = imageParts,
                 organs = organParts,
                 lang = Constants.LANG_VIETNAMESE,
