@@ -16,7 +16,6 @@ import com.agri.agriscan.domain.model.Plant
 import com.agri.agriscan.domain.model.UiState
 import com.agri.agriscan.presentation.ui.treatment.TreatmentActivity
 import com.agri.agriscan.util.Constants
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
