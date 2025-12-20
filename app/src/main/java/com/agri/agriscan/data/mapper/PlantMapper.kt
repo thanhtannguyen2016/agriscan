@@ -19,7 +19,7 @@ class PlantMapper @Inject constructor() {
                 family = result.species.family?.scientificNameWithoutAuthor,
                 confidence = result.score,
                 imageUrl = result.images?.firstOrNull()?.url?.medium,
-                gbifId = result.gbif?.id
+                gbifId = result.gbif?.id.toString()
             )
         }
 
@@ -41,7 +41,7 @@ class PlantMapper @Inject constructor() {
                 family = varietyInfo.species.family?.scientificNameWithoutAuthor,
                 confidence = 1.0f, // Not provided in list endpoint
                 imageUrl = null,
-                gbifId = null
+                gbifId = ""
             ),
             confidence = 1.0f,
             imageUrl = null
@@ -60,7 +60,7 @@ class PlantMapper @Inject constructor() {
                 family = speciesResult.species.family?.scientificNameWithoutAuthor,
                 confidence = speciesResult.score,
                 imageUrl = speciesResult.images?.firstOrNull()?.url?.medium,
-                gbifId = speciesResult.gbif?.id
+                gbifId = speciesResult.gbif?.id.toString()
             )
 
             val varieties = speciesResult.varieties.map { varietyResult ->

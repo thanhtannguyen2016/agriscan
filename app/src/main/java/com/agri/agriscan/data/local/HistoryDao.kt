@@ -1,4 +1,4 @@
-package com.agri.agriscan.data.local.database.dao
+package com.agri.agriscan.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert

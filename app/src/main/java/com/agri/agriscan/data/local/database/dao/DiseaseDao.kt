@@ -1,4 +1,7 @@
 package com.agri.agriscan.data.local.database.dao
 
-class DiseaseDao {
+import androidx.room.Dao
+
+@Dao
+interface DiseaseDao {
 }

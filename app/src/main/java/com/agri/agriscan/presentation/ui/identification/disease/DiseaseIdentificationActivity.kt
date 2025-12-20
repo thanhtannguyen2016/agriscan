@@ -2,9 +2,13 @@ package com.agri.agriscan.presentation.ui.identification.disease
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -30,6 +34,7 @@ class DiseaseIdentificationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDiseaseIdentificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        hideStatusBar()
 
         setupToolbar()
         setupRecyclerView()
@@ -60,6 +65,21 @@ class DiseaseIdentificationActivity : AppCompatActivity() {
             viewModel.identifyDisease(imageUri)
         } else {
             finish()
+        }
+    }
+
+    private fun hideStatusBar(){
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val controller = window.insetsController
+            if (controller != null) {
+                controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
     }
 

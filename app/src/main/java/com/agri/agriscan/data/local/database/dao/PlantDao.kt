@@ -1,4 +1,7 @@
 package com.agri.agriscan.data.local.database.dao
 
-class PlantDao {
+import androidx.room.Dao
+
+@Dao
+interface PlantDao {
 }

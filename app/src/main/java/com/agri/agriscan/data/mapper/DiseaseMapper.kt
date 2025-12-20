@@ -54,7 +54,7 @@ class DiseaseMapper @Inject constructor() {
             family = null,
             confidence = 0f,
             imageUrl = null,
-            gbifId = null
+            gbifId = ""
         )
     }
 }

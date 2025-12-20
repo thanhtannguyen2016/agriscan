@@ -39,6 +39,7 @@
     <string name="confirm_disease">Xác nhận bệnh</string>
     <string name="view_treatment">Xem phương pháp điều trị</string>
     <string name="disease_image">Ảnh bệnh</string>
+    <string name="disease_name_format">Bệnh: %1$s</string>
 
     <!-- Treatment -->
     <string name="treatment_methods">Phương pháp điều trị</string>

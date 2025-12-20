@@ -3,6 +3,7 @@ package com.agri.agriscan.data.repository
 import android.content.Context
 import android.net.Uri
 import com.agri.agriscan.BuildConfig
+import com.agri.agriscan.data.local.database.dao.HistoryDao
 import com.agri.agriscan.data.remote.api.PlantNetApi
 import com.agri.agriscan.data.mapper.DiseaseMapper
 import com.agri.agriscan.domain.model.*
@@ -16,13 +17,17 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.collections.map
 
 class DiseaseRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val plantNetApi: PlantNetApi,
-    private val diseaseMapper: DiseaseMapper
+    private val diseaseMapper: DiseaseMapper,
+    private val historyDao: HistoryDao
 ) : DiseaseRepository {
 
     override suspend fun getDiseases(prefix: String?): Flow<Resource<List<Disease>>> = flow {

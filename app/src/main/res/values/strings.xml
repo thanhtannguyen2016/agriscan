@@ -39,6 +39,7 @@
     <string name="confirm_disease">Confirm Disease</string>
     <string name="view_treatment">View Treatment</string>
     <string name="disease_image">Disease Image</string>
+    <string name="disease_name_format">Bệnh: %1$s</string>
 
     <!-- Treatment -->
     <string name="treatment_methods">Treatment Methods</string>

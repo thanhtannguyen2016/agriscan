@@ -84,11 +84,13 @@ class DiseaseIdentificationViewModel @Inject constructor(
         // Update identification with confirmed disease
         val currentIdentification = (_uiState.value as? UiState.Success)?.data
         if (currentIdentification != null) {
-            val updatedIdentification = confirmDiseaseUseCase(
-                identification = currentIdentification,
-                confirmedDisease = disease
-            )
-            _uiState.value = UiState.Success(updatedIdentification)
+            viewModelScope.launch {
+                val updatedIdentification = confirmDiseaseUseCase(
+                    identification = currentIdentification,
+                    confirmedDisease = disease
+                )
+                _uiState.value = UiState.Success(updatedIdentification)
+            }
         }
     }
 

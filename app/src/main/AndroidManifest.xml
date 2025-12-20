@@ -59,6 +59,11 @@
             android:name=".presentation.ui.treatment.TreatmentActivity"
             android:theme="@style/Theme.AgriScan" />
 
+        <!-- History Activity -->
+        <activity
+            android:name=".presentation.ui.history.HistoryActivity"
+            android:theme="@style/Theme.AgriScan" />
+
         <!-- FileProvider for camera -->
         <provider
             android:name="androidx.core.content.FileProvider"

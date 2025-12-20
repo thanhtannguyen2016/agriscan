@@ -4,8 +4,10 @@ import com.agri.agriscan.domain.model.Disease
 import com.agri.agriscan.domain.model.Plant
 import com.agri.agriscan.domain.model.Resource
 import com.agri.agriscan.domain.model.Treatment
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
 import kotlinx.coroutines.flow.Flow
-
 interface TreatmentRepository {
 
     /**

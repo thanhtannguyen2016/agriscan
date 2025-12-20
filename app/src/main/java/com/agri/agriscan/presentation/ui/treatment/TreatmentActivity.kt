@@ -1,11 +1,17 @@
 package com.agri.agriscan.presentation.ui.treatment
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.viewpager2.widget.ViewPager2
+import com.agri.agriscan.R
 import com.agri.agriscan.databinding.ActivityTreatmentBinding
 import com.agri.agriscan.domain.model.Disease
 import com.agri.agriscan.domain.model.Plant
@@ -26,22 +32,38 @@ class TreatmentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTreatmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        hideStatusBar()
 
         setupToolbar()
         setupViewPager()
         setupObservers()
 
         // Get plant and disease data
-        val plant = intent.getParcelableExtra<Plant>(Constants.EXTRA_PLANT_DATA)
-        val disease = intent.getParcelableExtra<Disease>(Constants.EXTRA_DISEASE_DATA)
+        val plant = intent.getParcelableExtraCompat<Plant>(Constants.EXTRA_PLANT_DATA)
+        val disease = intent.getParcelableExtraCompat<Disease>(Constants.EXTRA_DISEASE_DATA)
 
         if (plant != null && disease != null) {
             binding.tvPlantName.text = "${plant.commonNames.firstOrNull() ?: plant.scientificName}"
-            binding.tvDiseaseName.text = "Bệnh: ${disease.name}"
+            binding.tvDiseaseName.text = getString(R.string.disease_name_format, disease.name)
 
             viewModel.getTreatment(plant, disease)
         } else {
             finish()
+        }
+    }
+
+    private fun hideStatusBar(){
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val controller = window.insetsController
+            if (controller != null) {
+                controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
     }
 
@@ -101,4 +123,9 @@ class TreatmentActivity : AppCompatActivity() {
             }
             .show()
     }
+}
+
+inline fun <reified T : Parcelable> Intent.getParcelableExtraCompat(key: String): T? = when {
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> getParcelableExtra(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
 }

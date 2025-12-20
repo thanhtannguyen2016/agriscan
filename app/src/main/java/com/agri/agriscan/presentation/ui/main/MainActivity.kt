@@ -3,13 +3,18 @@ package com.agri.agriscan.presentation.ui.main
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.agri.agriscan.databinding.ActivityMainBinding
 import com.agri.agriscan.presentation.ui.camera.CameraActivity
+import com.agri.agriscan.presentation.ui.history.HistoryActivity
 import com.agri.agriscan.util.NetworkUtils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,8 +43,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        hideStatusBar()
 
         setupUI()
+    }
+
+    private fun hideStatusBar(){
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val controller = window.insetsController
+            if (controller != null) {
+                controller.hide(WindowInsets.Type.statusBars())
+                controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        }
     }
 
     private fun setupUI() {
@@ -50,8 +71,8 @@ class MainActivity : AppCompatActivity() {
 
         // History Button
         binding.btnHistory.setOnClickListener {
-            // TODO: Open History Activity
-            Toast.makeText(this, "Chức năng đang phát triển", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, HistoryActivity::class.java)
+            startActivity(intent)
         }
     }
 
